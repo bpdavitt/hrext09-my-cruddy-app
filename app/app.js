@@ -51,8 +51,9 @@ var keyExists = function(key) {
   return currentValue !== null;
 }
 
-var createWorkout = function(type, duration, distance, notes, time, completed){
+var createWorkout = function(date, type, duration, distance, notes, time, completed){
   var workout = {
+    "date": date,
     "type": type,
     "duration": duration,
     "distance": distance,
@@ -63,9 +64,9 @@ var createWorkout = function(type, duration, distance, notes, time, completed){
   return workout;
 }
 
-var buildWorkout = function(date, workout){
+var buildWorkout = function(workout){
   var $workout = $('<div class = "workout"></div>')
-  var $date = $(`<div class = "date">${date}</div>`)
+  var $date = $(`<div class = "date">${formatDate(workout.date)}</div>`)
   var $type = $(`<div class = "type">${workout.type}</div>`)
   var $duration = $(`<div class = "duration">${workout.duration} minutes</div>`)
   var $distance = $(`<div class = "distance">${workout.distance} miles</div>`)
@@ -74,6 +75,38 @@ var buildWorkout = function(date, workout){
   var $completed = $(`<div class = "completed">Completed: ${workout.completed}</div>`)
   $workout.append($date, $type, $duration, $distance, $notes, $time, $completed);
   return $workout;
+}
+
+function sortLocalStorage(){
+   var workouts = JSON.parse(localStorage.getItem('workouts'));
+   workouts.sort(function(a,b){
+    return a.date < b.date;
+   })
+   
+   return workouts;
+}
+
+var formatDate = function(date){
+  if(typeof date === 'number'){
+    date = date.toString();
+    return `${date.substring(0,2)}/${date.substring(2,4)}/${date.substring(4)}`
+  }
+  if(typeof date === 'string'){
+    var temp = date.split('/');
+    temp = temp[0] + temp[1] + temp[2];
+    return Number(temp);
+  }
+}
+
+var drawWorkouts = function(){
+  var $workoutHolder = $('.workout-holder');
+  $workoutHolder.html('Planned Workouts')
+  var allWorkouts = sortLocalStorage();
+  for(var i = 0; i < allWorkouts.length; i++){
+    var $workout = buildWorkout(allWorkouts[i]);
+    $workout.appendTo(".workout-holder"); 
+  }
+
 }
 
 
@@ -85,20 +118,27 @@ $(document).ready(function() {
     event.preventDefault();
 
     var date = $("#dateInput").val();
+    if(date === ''){
+      alert("You must enter a date");
+      return undefined;
+    }
+    date = formatDate(date);
     var type = $("#typeInput").val();
     var duration = Number($("#durationInput").val());
     var distance = Number($("#distanceInput").val());
     var notes = $("#notesInput").val();
     var time = Number($("#timeInput").val());
-    var workout = createWorkout(type, duration, distance, notes, time, 'planned')
+    var workout = createWorkout(date, type, duration, distance, notes, time, 'planned')
     //passes workout into local storage
-    createItem(date, workout);
-    //adds new workout to list of workouts
-    var $workout = buildWorkout(date, workout);
-    $workout.appendTo(".workout-holder");
+    createItem('workouts', workout);
+    drawWorkouts();
+  });
 
+  $(".workout-holder").click(function(event){
+    event.preventDefault();
+    drawWorkouts();
+    //$workoutHolder.html('<div class = "workout-holder">Planned Workouts</div>');
 
-    
   });
 
 
