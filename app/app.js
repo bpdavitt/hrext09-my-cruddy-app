@@ -64,7 +64,7 @@ var createWorkout = function(date, type, duration, distance, notes, time, comple
   return workout;
 }
 
-var buildWorkout = function(workout){
+var buildWorkout = function(workout, index){
   var $workout = $('<div class = "workout"></div>')
   var $date = $(`<div class = "date">${formatDate(workout.date)}</div>`)
   var $type = $(`<div class = "type">${workout.type}</div>`)
@@ -73,8 +73,16 @@ var buildWorkout = function(workout){
   var $notes = $(`<div class = "notes">Notes: ${workout.notes}</div>`)
   var $time = $(`<div class = "time">Time of Day: ${workout.time}</div>`)
   var $completed = $(`<div class = "completed">Completed: ${workout.completed}</div>`)
-  $workout.append($date, $type, $duration, $distance, $notes, $time, $completed);
+  var $index = $(`<div class = "index">${index}</div>`)
+  $workout.append($date, $type, $duration, $distance, $notes, $time, $completed, $index);
   return $workout;
+}
+
+var deleteWorkout = function(index){
+  var allWorkouts = sortLocalStorage();
+  allWorkouts.splice(index, 1);
+  window.localStorage.setItem('workouts', JSON.stringify(allWorkouts));
+  drawWorkouts();
 }
 
 function sortLocalStorage(){
@@ -103,9 +111,21 @@ var drawWorkouts = function(){
   $plannedWorkouts.html("Planned Workouts")
   var $completedWorkouts = $(".completed-workouts");
   $completedWorkouts.html("Completed Workouts")
+  
   var allWorkouts = sortLocalStorage();
   for(var i = 0; i < allWorkouts.length; i++){
-    var $workout = buildWorkout(allWorkouts[i]);
+    var $workout = buildWorkout(allWorkouts[i], i);
+    
+    $($workout).click(function(event){
+      event.preventDefault();
+      //event.currentTarget.lastChild.textContent will allow for access of index
+      var action = prompt("Would you like to delete or update this workout", "Delete/Update");
+      if(action === "Delete"){
+        deleteWorkout(Number(event.currentTarget.lastChild.textContent));
+      }
+      console.log('Index: ' + event.currentTarget.lastChild.textContent);
+      
+    })
     if(allWorkouts[i].completed){
       $workout.appendTo(".completed-workouts");   
     }else{
@@ -147,6 +167,8 @@ $(document).ready(function() {
     //$workoutHolder.html('<div class = "workout-holder">Planned Workouts</div>');
 
   });
+
+  
 
 
 

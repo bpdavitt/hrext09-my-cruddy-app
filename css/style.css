@@ -60,3 +60,7 @@
 .completed-workouts{
 	background-color: green;
 }
+
+.index{
+	display:none;
+}
