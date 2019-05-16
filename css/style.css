@@ -2,3 +2,37 @@
   input boxes
   buttons
 */
+
+.form-holder { /*box that contains workout form */
+  display: flex;
+  width: 350px;
+  margin: auto;
+  justify-content: center;
+  flex-wrap: wrap;
+  background-color: yellow;
+}
+
+.wo-input{
+	display:block;
+	width: 200px;
+	margin:auto;
+	justify-content: center;
+	flex-wrap: wrap;
+}
+
+#createButton{
+	display:inline-block;
+	width: 200px;
+	margin:auto;
+	justify-content: center;
+	flex-wrap: wrap;
+}
+
+.workout-holder { /*box that contains workouts */
+  display: flex;
+  width: 350px;
+  margin: auto;
+  justify-content: center;
+  flex-wrap: wrap;
+  background-color: pink;
+}

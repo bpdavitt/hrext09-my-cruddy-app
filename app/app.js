@@ -17,15 +17,23 @@ var getItem = function(key) {
 
 //create
 var createItem = function(key, value) {
-  var arr = [];
+  if(!keyExists(key)){
+    var arr = [];
+  }else{
+    var arr = JSON.parse(window.localStorage[key])
+  }
   arr.push(value);
   return window.localStorage.setItem(key, JSON.stringify(arr));
 }
 
 //update
 var updateItem = function(key, value) {
+  //Will probably need to have the index number of the item we'll be updating. Parse, update, then re-stringify and set value to key
+
   // need to JSON.parse the value @ this key, push value into the array, then re-stringify and replace the value in local storage
-  window.localStorage[key].push(JSON.stringify(value));
+  // var arr = JSON.parse(window.localStorage[key])
+  // arr.push(value);
+  // return window.localStorage.setItem(key, JSON.stringify(arr));
 }
 
 //delete
@@ -55,6 +63,19 @@ var createWorkout = function(type, duration, distance, notes, time, completed){
   return workout;
 }
 
+var buildWorkout = function(date, workout){
+  var $workout = $('<div class = "workout"></div>')
+  var $date = $(`<div class = "date">${date}</div>`)
+  var $type = $(`<div class = "type">${workout.type}</div>`)
+  var $duration = $(`<div class = "duration">${workout.duration} minutes</div>`)
+  var $distance = $(`<div class = "distance">${workout.distance} miles</div>`)
+  var $notes = $(`<div class = "notes">Notes: ${workout.notes}</div>`)
+  var $time = $(`<div class = "time">Time of Day: ${workout.time}</div>`)
+  var $completed = $(`<div class = "completed">Completed: ${workout.completed}</div>`)
+  $workout.append($date, $type, $duration, $distance, $notes, $time, $completed);
+  return $workout;
+}
+
 
 ///////////////////////////////////////////
 //event handlers for the buttons and ... possibly the inputboxes
@@ -65,28 +86,22 @@ $(document).ready(function() {
 
     var date = $("#dateInput").val();
     var type = $("#typeInput").val();
-    var duration = $("#durationInput").val();
-    var distance = $("#distanceInput").val();
+    var duration = Number($("#durationInput").val());
+    var distance = Number($("#distanceInput").val());
     var notes = $("#notesInput").val();
-    var time = $("#timeInput").val();
+    var time = Number($("#timeInput").val());
     var workout = createWorkout(type, duration, distance, notes, time, 'planned')
-    if (keyExists(date)) {
-      //current key exists, do something error-handle-y
-      updateItem(date,workout);
-    } else {
-      createItem(date, workout);
-    }
+    //passes workout into local storage
+    createItem(date, workout);
+    //adds new workout to list of workouts
+    var $workout = buildWorkout(date, workout);
+    $workout.appendTo(".workout-holder");
+
+
+    
   });
 
-  $('#updateButton').click(function(event) {
-    event.preventDefault();
 
-    var currentKey = $("#keyInput").val();
-    var currentValue = $("#valueInput").val();
-    if (keyExists(currentKey)) {
-      updateItem(currentKey, currentValue);
-    } else {
-      //current key doesnt exist, do stuff
-    }
-  });
+
+  
 });

@@ -2,7 +2,8 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>HREXT09 R00lz!</title>
+  <title>Workout Planner</title>
+  <link rel="stylesheet" type="text/css" href="css/style.css">
   <script
           src="https://code.jquery.com/jquery-3.3.1.js"
           integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
@@ -10,16 +11,21 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.9.1/underscore-min.js"></script>
 </head>
 <body>
-  <form>
-    <input id="dateInput" type="text" placeholder="date (MM/DD/YYYY)"></input>
-    <input id="typeInput" type="text" placeholder="type of workout"></input>
-    <input id="durationInput" type="text" placeholder="workout duration (minutes)"></input>
-    <input id="distanceInput" type="text" placeholder="workout distance (miles)"></input>
-    <input id="notesInput" type="text" placeholder="Notes (intensity, plan, etc)"></input>
-    <input id="timeInput" type="text" placeholder="Time of day (24h format)"></input>
-    <button id="createButton" type='submit'>Create</button>
-    <button id="updateButton" type='submit'>Update</button>
-  </form>
-  <script src='app/app.js'></script>
+  <div class = "form-holder">
+    <form class = "create-workout">
+      <h3>Plan a new Workout</h3>
+      <input class = "wo-input" id="dateInput" type="text" placeholder="date (MM/DD/YYYY)"></input>
+      <input class = "wo-input" id="typeInput" type="text" placeholder="type of workout"></input>
+      <input class = "wo-input" id="durationInput" type="number" placeholder="workout duration (minutes)"></input>
+      <input class = "wo-input" id="distanceInput" type="number" placeholder="workout distance (miles)"></input>
+      <input class = "wo-input" id="notesInput" type="text" placeholder="Notes (intensity, plan, etc)"></input>
+      <input class = "wo-input" id="timeInput" type="number" placeholder="Time of day (24h format)"></input>
+      <button id="createButton" type='submit'>Create</button>
+    </form>
+  </div>
+  <div class = "workout-holder">
+    
+  </div>
+  <script src="app/app.js"></script>
 </body>
 </html>
