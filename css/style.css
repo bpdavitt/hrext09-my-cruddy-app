@@ -30,10 +30,11 @@
 
 .workout-holder { /*box that contains workouts */
   display: flex;
-  width: 350px;
+  width: auto;
   margin: auto;
   justify-content: center;
   flex-wrap: wrap;
+
   background-color: pink;
 }
 
@@ -43,12 +44,19 @@
   border: 1px solid black;
   justify-content: center;
   height: auto;
-  width: 350px;
+  width: 75%;
   flex-wrap: wrap;
   padding: 10px;
-  margin-top: 0.5px;
-  margin-bottom: 0.5px;
+  margin: 5%;
   font-family: Helvetica Neue;
   font-size: 15px;
   background-color: white;
+}
+
+.container{
+	width:50%;
+}
+
+.completed-workouts{
+	background-color: green;
 }

@@ -59,7 +59,7 @@ var createWorkout = function(date, type, duration, distance, notes, time, comple
     "distance": distance,
     "notes": notes,
     "time": time,
-    "completed": completed === 'completed'
+    "completed": completed === 'Y'
   }
   return workout;
 }
@@ -99,12 +99,18 @@ var formatDate = function(date){
 }
 
 var drawWorkouts = function(){
-  var $workoutHolder = $('.workout-holder');
-  $workoutHolder.html('Planned Workouts')
+  var $plannedWorkouts = $(".planned-workouts");
+  $plannedWorkouts.html("Planned Workouts")
+  var $completedWorkouts = $(".completed-workouts");
+  $completedWorkouts.html("Completed Workouts")
   var allWorkouts = sortLocalStorage();
   for(var i = 0; i < allWorkouts.length; i++){
     var $workout = buildWorkout(allWorkouts[i]);
-    $workout.appendTo(".workout-holder"); 
+    if(allWorkouts[i].completed){
+      $workout.appendTo(".completed-workouts");   
+    }else{
+      $workout.appendTo(".planned-workouts"); 
+    }
   }
 
 }
@@ -128,7 +134,8 @@ $(document).ready(function() {
     var distance = Number($("#distanceInput").val());
     var notes = $("#notesInput").val();
     var time = Number($("#timeInput").val());
-    var workout = createWorkout(date, type, duration, distance, notes, time, 'planned')
+    var completed = $("#completeInput").val();
+    var workout = createWorkout(date, type, duration, distance, notes, time, completed)
     //passes workout into local storage
     createItem('workouts', workout);
     drawWorkouts();
