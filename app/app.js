@@ -85,6 +85,13 @@ var deleteWorkout = function(index){
   drawWorkouts();
 }
 
+var updateWorkout = function(workout, index){
+  var allWorkouts = sortLocalStorage();
+  allWorkouts.splice(index, 1, workout);
+  window.localStorage.setItem('workouts', JSON.stringify(allWorkouts));
+  drawWorkouts();
+}
+
 function sortLocalStorage(){
    var workouts = JSON.parse(localStorage.getItem('workouts'));
    workouts.sort(function(a,b){
@@ -95,15 +102,8 @@ function sortLocalStorage(){
 }
 
 var formatDate = function(date){
-  if(typeof date === 'number'){
-    date = date.toString();
-    return `${date.substring(0,2)}/${date.substring(2,4)}/${date.substring(4)}`
-  }
-  if(typeof date === 'string'){
-    var temp = date.split('/');
-    temp = temp[0] + temp[1] + temp[2];
-    return Number(temp);
-  }
+  return date;
+  
 }
 
 var drawWorkouts = function(){
@@ -119,10 +119,37 @@ var drawWorkouts = function(){
     $($workout).click(function(event){
       event.preventDefault();
       //event.currentTarget.lastChild.textContent will allow for access of index
+      /*
       var action = prompt("Would you like to delete or update this workout", "Delete/Update");
       if(action === "Delete"){
         deleteWorkout(Number(event.currentTarget.lastChild.textContent));
-      }
+      }*/
+      var $date = $("#dateUpdate")
+      modifyWorkout.showModal();
+      $("#deleteBtn").click(function(){    
+        deleteWorkout(Number(event.currentTarget.lastChild.textContent));
+        modifyWorkout.close()
+      });
+      $("#cancelBtn").click(function(){    
+        modifyWorkout.close()
+      });
+      $("#updateBtn").click(function(){
+        var date = $("#dateUpdate").val();
+        if(date === ''){
+          alert("You must enter a date");
+          return undefined;
+        }
+        var type = $("#typeUpdate").val();
+        var duration = Number($("#durationUpdate").val());
+        var distance = Number($("#distanceUpdate").val());
+        var notes = $("#notesUpdate").val();
+        var time = Number($("#timeUpdate").val());
+        var completed = $("#completeUpdate").val();
+        var updated = createWorkout(date, type, duration, distance, notes, time, completed)
+        updateWorkout(updated, event.currentTarget.lastChild.textContent)
+        modifyWorkout.close()
+      });
+
       console.log('Index: ' + event.currentTarget.lastChild.textContent);
       
     })
@@ -140,6 +167,9 @@ var drawWorkouts = function(){
 //event handlers for the buttons and ... possibly the inputboxes
   //preventdefault on button clicks
 $(document).ready(function() {
+  
+  drawWorkouts();
+
   $('#createButton').click(function(event) {
     event.preventDefault();
 
@@ -148,7 +178,6 @@ $(document).ready(function() {
       alert("You must enter a date");
       return undefined;
     }
-    date = formatDate(date);
     var type = $("#typeInput").val();
     var duration = Number($("#durationInput").val());
     var distance = Number($("#distanceInput").val());
@@ -164,13 +193,6 @@ $(document).ready(function() {
   $(".workout-holder").click(function(event){
     event.preventDefault();
     drawWorkouts();
-    //$workoutHolder.html('<div class = "workout-holder">Planned Workouts</div>');
-
   });
-
-  
-
-
-
   
 });

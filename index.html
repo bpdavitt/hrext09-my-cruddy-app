@@ -30,9 +30,28 @@
     </div>
     <div class = "completed-workouts container">Completed Workouts
       <div>Test2</div>
-    </div>
-    
+    </div>    
   </div>
+  <dialog id="modifyWorkout">
+    <form method="dialog">
+      <form class = "create-workout">
+        <h3>Update this Workout</h3>
+        <input class = "wo-input" id="dateUpdate" type="text" placeholder="date (MM/DD/YYYY)"></input>
+        <input class = "wo-input" id="typeUpdate" type="text" placeholder="type of workout"></input>
+        <input class = "wo-input" id="durationUpdate" type="number" placeholder="workout duration (minutes)"></input>
+        <input class = "wo-input" id="distanceUpdate" type="number" placeholder="workout distance (miles)"></input>
+        <input class = "wo-input" id="notesUpdate" type="text" placeholder="Notes (intensity, plan, etc)"></input>
+        <input class = "wo-input" id="timeUpdate" type="number" placeholder="Time of day (24h format)"></input>
+        <input class = "wo-input" id="completeUpdate" type="text" placeholder="Workout Completed? (Y/N)"></input>
+        <button id="createButton" type='submit'>Create</button>
+      </form>
+      <menu>
+        <button id="cancelBtn" value="default">Cancel</button>
+        <button id="updateBtn" value="default">Update</button>
+        <button id="deleteBtn" value="default">Delete</button>
+      </menu>
+    </form>
+  </dialog>
   <script src="app/app.js"></script>
 </body>
 </html>
