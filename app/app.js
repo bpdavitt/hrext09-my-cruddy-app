@@ -11,6 +11,16 @@
 
 //localStorage interaction function
 //get item
+var populateTests = function(){
+  var data = [
+  {"date":"05/17/2019","type":"Swim","duration":40,"distance":1,"notes":"Tempo","time":900,"completed":true},
+  {"date":"05/18/2019","type":"Run","duration":21,"distance":3,"notes":"Tempo","time":2000,"completed":false},
+  {"date":"05/17/2019","type":"Bike","duration":60,"distance":20,"notes":"Threshold","time":1430,"completed":false},
+  {"date":"05/16/2019","type":"Run","duration":30,"distance":3.5,"notes":"Tempo","time":1430,"completed":true}
+  ]
+  window.localStorage.setItem('workouts', JSON.stringify(data))
+}
+
 var getItem = function(key) {
   return window.localStorage.getItem(key);
 }
@@ -26,26 +36,6 @@ var createItem = function(key, value) {
   return window.localStorage.setItem(key, JSON.stringify(arr));
 }
 
-//update
-var updateItem = function(key, value) {
-  //Will probably need to have the index number of the item we'll be updating. Parse, update, then re-stringify and set value to key
-
-  // need to JSON.parse the value @ this key, push value into the array, then re-stringify and replace the value in local storage
-  // var arr = JSON.parse(window.localStorage[key])
-  // arr.push(value);
-  // return window.localStorage.setItem(key, JSON.stringify(arr));
-}
-
-//delete
-var deleteItem = function(key) {
-  return window.localStorage.removeItem(key);
-}
-
-//clear everything
-var clearEverything = function() {
-  return window.localStorage.clear();
-}
-
 var keyExists = function(key) {
   var currentValue = getItem(key);
   return currentValue !== null;
@@ -59,7 +49,7 @@ var createWorkout = function(date, type, duration, distance, notes, time, comple
     "distance": distance,
     "notes": notes,
     "time": time,
-    "completed": completed === 'Y'
+    "completed": completed
   }
   return workout;
 }
@@ -115,25 +105,30 @@ var drawWorkouts = function(){
   var allWorkouts = sortLocalStorage();
   for(var i = 0; i < allWorkouts.length; i++){
     var $workout = buildWorkout(allWorkouts[i], i);
-    
-    $($workout).click(function(event){
-      event.preventDefault();
-      //event.currentTarget.lastChild.textContent will allow for access of index
-      /*
-      var action = prompt("Would you like to delete or update this workout", "Delete/Update");
-      if(action === "Delete"){
-        deleteWorkout(Number(event.currentTarget.lastChild.textContent));
-      }*/
-      var $date = $("#dateUpdate")
+   
+    $($workout).unbind('click').click(function(event){
+      event.preventDefault();      
+      var selectedWorkout = sortLocalStorage()[event.currentTarget.lastChild.textContent];
+      //Prepopulates workout modification form with data from the selected workout
+      $("#dateUpdate").val(selectedWorkout.date)
+      $("#typeUpdate").val(selectedWorkout.type)
+      $("#durationUpdate").val(selectedWorkout.duration)
+      $("#distanceUpdate").val(selectedWorkout.distance)
+      $("#notesUpdate").val(selectedWorkout.notes)
+      $("#timeUpdate").val(selectedWorkout.time)
+      $("#completedpdate").val(selectedWorkout.completed)
+      
+      //Displays a popup box to modify workouts, previous info pre-populated
       modifyWorkout.showModal();
-      $("#deleteBtn").click(function(){    
+
+      $("#deleteBtn").unbind("click").click(function(){    
         deleteWorkout(Number(event.currentTarget.lastChild.textContent));
         modifyWorkout.close()
       });
-      $("#cancelBtn").click(function(){    
+      $("#cancelBtn").unbind("click").click(function(){    
         modifyWorkout.close()
       });
-      $("#updateBtn").click(function(){
+      $("#updateBtn").unbind("click").click(function(){
         var date = $("#dateUpdate").val();
         if(date === ''){
           alert("You must enter a date");
@@ -149,25 +144,23 @@ var drawWorkouts = function(){
         updateWorkout(updated, event.currentTarget.lastChild.textContent)
         modifyWorkout.close()
       });
-
-      console.log('Index: ' + event.currentTarget.lastChild.textContent);
-      
     })
-    if(allWorkouts[i].completed){
+    ///*****************
+    if(allWorkouts[i].completed === 'Y'){
       $workout.appendTo(".completed-workouts");   
     }else{
       $workout.appendTo(".planned-workouts"); 
     }
-  }
 
+  }
 }
 
-
-///////////////////////////////////////////
-//event handlers for the buttons and ... possibly the inputboxes
-  //preventdefault on button clicks
 $(document).ready(function() {
   
+  if(!keyExists('workouts')){
+    populateTests();
+  }
+
   drawWorkouts();
 
   $('#createButton').click(function(event) {
@@ -190,9 +183,8 @@ $(document).ready(function() {
     drawWorkouts();
   });
 
-  $(".workout-holder").click(function(event){
+  $(".workout-holder").unbind("click").click(function(event){
     event.preventDefault();
     drawWorkouts();
   });
-  
 });
