@@ -1,16 +1,3 @@
-/*
-
- ### Basic Reqs
-- [ ] Where to store data? (localstorage)
-- [ ] How to caputure data? (web form)
-- [ ] How to modify data? (update action, delete action)
-- [ ] How to view data? (style?)
-- [ ] UI/UX considerations (how are we going to use this)
-
-*/
-
-//localStorage interaction function
-//get item
 var populateTests = function(){
   var data = [
   {"date":"05/17/2019","type":"Swim","duration":40,"distance":1,"notes":"Tempo","time":900,"completed":true},
@@ -42,6 +29,7 @@ var keyExists = function(key) {
 }
 
 var createWorkout = function(date, type, duration, distance, notes, time, completed){
+  type = type.charAt(0).toUpperCase() + type.substring(1);
   var workout = {
     "date": date,
     "type": type,
@@ -65,6 +53,15 @@ var buildWorkout = function(workout, index){
   var $completed = $(`<div class = "completed">Completed: ${workout.completed}</div>`)
   var $index = $(`<div class = "index">${index}</div>`)
   $workout.append($date, $type, $duration, $distance, $notes, $time, $completed, $index);
+  if(workout.type === "Swim"){
+    $workout.css("background-color", "aqua");
+  }
+  if(workout.type === "Bike"){
+    $workout.css("background-color", "Goldenrod");
+  }
+  if(workout.type === "Run"){
+    $workout.css("background-color", "Lightgray");
+  }
   return $workout;
 }
 
@@ -116,7 +113,7 @@ var drawWorkouts = function(){
       $("#distanceUpdate").val(selectedWorkout.distance)
       $("#notesUpdate").val(selectedWorkout.notes)
       $("#timeUpdate").val(selectedWorkout.time)
-      $("#completedpdate").val(selectedWorkout.completed)
+      $("#completedUpdate").val(selectedWorkout.completed)
       
       //Displays a popup box to modify workouts, previous info pre-populated
       modifyWorkout.showModal();
@@ -139,7 +136,7 @@ var drawWorkouts = function(){
         var distance = Number($("#distanceUpdate").val());
         var notes = $("#notesUpdate").val();
         var time = Number($("#timeUpdate").val());
-        var completed = $("#completeUpdate").val();
+        var completed = $("#completedUpdate").val();
         var updated = createWorkout(date, type, duration, distance, notes, time, completed)
         updateWorkout(updated, event.currentTarget.lastChild.textContent)
         modifyWorkout.close()
@@ -151,8 +148,43 @@ var drawWorkouts = function(){
     }else{
       $workout.appendTo(".planned-workouts"); 
     }
+  } //completes iteration through all workouts
+  generateChart(allWorkouts);
 
+}
+
+var generateChart = function(allWorkouts){
+  var data = [["Swim"],["Bike"],["Run"]];
+  for(element of allWorkouts){
+    if(element.completed === "Y"){
+      if(element.type === "Swim"){
+        data[0].push(element.duration)
+      }
+      if(element.type === "Bike"){
+        data[1].push(element.duration)
+      }
+      if(element.type === "Run"){
+        data[2].push(element.duration)
+      }
+    }
   }
+
+  var chart = c3.generate({
+    data: {
+      columns: data,
+      type: 'pie'
+    },
+    color: {
+      pattern: ['aqua','Goldenrod','Lightgray']
+    },
+    pie: {
+          label: {
+              format: function (value, ratio, id) {
+                  return value + ' minutes';
+              }
+          }
+      }
+  });
 }
 
 $(document).ready(function() {

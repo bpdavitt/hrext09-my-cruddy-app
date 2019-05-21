@@ -9,8 +9,14 @@
           integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
           crossorigin="anonymous"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.9.1/underscore-min.js"></script>
+  <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/c3/0.4.21/c3.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.17/d3.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/c3/0.4.21/c3.js"></script>
 </head>
 <body>
+  <div class = "banner">
+    <h1>My Cruddy Workout Planner</h1>
+  </div>
   <div class = "form-holder">
     <form class = "create-workout">
       <h3>Plan a new Workout</h3>
@@ -36,13 +42,13 @@
     <form method="dialog">
       <form class = "create-workout">
         <h3>Update this Workout</h3>
-        <input class = "wo-input" id="dateUpdate" type="text" placeholder="date (MM/DD/YYYY)"></input>
+        <input class = "wo-input" id="dateUpdate" type="text" label="Date" placeholder="date (MM/DD/YYYY)"></input>
         <input class = "wo-input" id="typeUpdate" type="text" placeholder="type of workout"></input>
         <input class = "wo-input" id="durationUpdate" type="number" placeholder="workout duration (minutes)"></input>
         <input class = "wo-input" id="distanceUpdate" type="number" placeholder="workout distance (miles)"></input>
         <input class = "wo-input" id="notesUpdate" type="text" placeholder="Notes (intensity, plan, etc)"></input>
         <input class = "wo-input" id="timeUpdate" type="number" placeholder="Time of day (24h format)"></input>
-        <input class = "wo-input" id="completeUpdate" type="text" placeholder="Workout Completed? (Y/N)"></input>
+        <input class = "wo-input" id="completedUpdate" type="text" placeholder="Workout Completed? (Y/N)"></input>
         <button id="createButton" type='submit'>Create</button>
       </form>
       <menu>
@@ -52,6 +58,7 @@
       </menu>
     </form>
   </dialog>
+  <div id="chart"></div>
   <script src="app/app.js"></script>
 </body>
 </html>
