@@ -172,33 +172,37 @@ var drawWorkouts = function(startDate, endDate){
       }
     }
   } //completes iteration through all workouts
-  generateChart(allWorkouts);
+  generateChart(allWorkouts,startDate,endDate);
 
 }
 
-var generateChart = function(allWorkouts){
-  var data = [["Swim"],["Bike"],["Run"]];
+var generateChart = function(allWorkouts,startDate,endDate){
+  var info = [["Swim"],["Bike"],["Run"]];
   for(element of allWorkouts){
-    if(element.completed === "Y"){
-      if(element.type === "Swim"){
-        data[0].push(element.duration)
-      }
-      if(element.type === "Bike"){
-        data[1].push(element.duration)
-      }
-      if(element.type === "Run"){
-        data[2].push(element.duration)
+    if(dateInRange(element.date, startDate, endDate)){
+      if(element.completed === "Y"){
+        if(element.type === "Swim"){
+          info[0].push(element.duration)
+        }
+        if(element.type === "Bike"){
+          info[1].push(element.duration)
+        }
+        if(element.type === "Run"){
+          info[2].push(element.duration)
+        }
       }
     }
   }
 
   var chart = c3.generate({
     data: {
-      columns: data,
+      columns: info,
       type: 'pie'
     },
-    color: {
-      pattern: ['aqua','Goldenrod','Lightgray']
+    colors: {
+      "Swim": "aqua",
+      "Bike": "Goldenrod",
+      "Run": "Lightgray"
     },
     pie: {
           label: {
@@ -206,7 +210,7 @@ var generateChart = function(allWorkouts){
                   return value + ' minutes';
               }
           }
-      },
+    },
     size: {
       width: 600,
       height: 600
