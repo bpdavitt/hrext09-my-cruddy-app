@@ -9,11 +9,20 @@
   margin: auto;
   justify-content: center;
   flex-wrap: wrap;
-  background-color: yellow;
+  background-color: lime;
   margin-top: 15px;
+  border-radius: 20px;
+  border: 1px solid black;
+  font-size: 30px;
 }
 
 .create-workout {
+    justify-content: center;
+    display: inline-flex;
+    flex-wrap: wrap;
+    padding-bottom: 20px;
+}
+.date-range {
     justify-content: center;
     display: inline-flex;
     flex-wrap: wrap;
@@ -76,6 +85,7 @@ h1{
     flex-wrap: wrap;
     height: 10%;
     padding:10px;
+    border: 1px solid black;
 }
 
 .planned-workouts{
@@ -102,10 +112,24 @@ h1{
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	background-color: blue
+	background-color: lime;
 }
 
 body{
-	background: gray;
+	background: black;
 	margin: 0px;
+	font-family: Helvetica Neue;
+}
+
+#chart{
+	display: flex;
+	justify-content: center;
+}
+
+.c3-chart-arc text {
+    fill: black;
+}
+
+.c3-legend-item {
+   fill: white;
 }

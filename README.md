@@ -16,8 +16,8 @@ Create Read Update and Delete framework using JS
 
  ## Advanced Tasks
  - [X] Users should be able to select a planned workout, modify information (if needed), and mark the workout as completed
- - [ ] Users should be able to review planned and/or completed workouts over a given time period ex: MM/DD/YYYY - MM/DD/YYYY
- - [ ] Add functionality to view workout composition in chart/graph form (% Swim vs Bike vs Run)
+ - [X] Users should be able to review planned and/or completed workouts over a given time period ex: MM/DD/YYYY - MM/DD/YYYY
+ - [X] Add functionality to view workout composition in chart/graph form (% Swim vs Bike vs Run)
  
  ## Very Advanced Tasks
  - [ ] It would be beneficial to pull completed workout data from fitness tracking devices (ex Garmin watch);
@@ -27,8 +27,8 @@ Create Read Update and Delete framework using JS
 - [x] Where to store data? (localstorage)
 - [x] How to caputure data? (web form)
 - [x] How to modify data? (update action, delete action)
-- [ ] How to view data? (style?)
-- [ ] UI/UX considerations (how are we going to use this)
+- [X] How to view data? (style?)
+- [X] UI/UX considerations (how are we going to use this)
 
  ## MVP 1 - Complete
  	Allow user to enter plans for a future workout

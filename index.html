@@ -3,7 +3,6 @@
 <head>
   <meta charset="UTF-8">
   <title>Workout Planner</title>
-  <link rel="stylesheet" type="text/css" href="css/style.css">
   <script
           src="https://code.jquery.com/jquery-3.3.1.js"
           integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
@@ -12,6 +11,7 @@
   <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/c3/0.4.21/c3.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.17/d3.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/c3/0.4.21/c3.js"></script>
+  <link rel="stylesheet" type="text/css" href="css/style.css">
 </head>
 <body>
   <div class = "banner">
@@ -28,6 +28,14 @@
       <input class = "wo-input" id="timeInput" type="number" placeholder="Time of day (24h format)"></input>
       <input class = "wo-input" id="completeInput" type="text" placeholder="Workout Completed? (Y/N)"></input>
       <button id="createButton" type='submit'>Create</button>
+    </form>
+  </div>
+  <div class = "form-holder">
+    <form class = "date-range">
+      <h3>View Workouts Within a Range of Dates</h3>
+      <input id = "date-start" type = "text" placeholder="Beginning date (MM/DD/YYYY)"></input>
+      <input id = "date-end" type = "text" placeholder="Ending date (MM/DD/YYYY)"></input>
+      <button id="date-btn" type='submit'>Submit</button>
     </form>
   </div>
   <div class = "workout-holder">

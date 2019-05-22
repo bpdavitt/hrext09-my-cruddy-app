@@ -44,7 +44,7 @@ var createWorkout = function(date, type, duration, distance, notes, time, comple
 
 var buildWorkout = function(workout, index){
   var $workout = $('<div class = "workout"></div>')
-  var $date = $(`<div class = "date">${formatDate(workout.date)}</div>`)
+  var $date = $(`<div class = "date">${workout.date}</div>`)
   var $type = $(`<div class = "type">${workout.type}</div>`)
   var $duration = $(`<div class = "duration">${workout.duration} minutes</div>`)
   var $distance = $(`<div class = "distance">${workout.distance} miles</div>`)
@@ -82,18 +82,39 @@ var updateWorkout = function(workout, index){
 function sortLocalStorage(){
    var workouts = JSON.parse(localStorage.getItem('workouts'));
    workouts.sort(function(a,b){
-    return a.date < b.date;
+    var aDates = a.date.split('/');
+    var bDates = b.date.split('/');
+    for(var i = 0; i < 3; i++){
+      aDates[i] = Number(aDates[i]);
+      bDates[i] = Number(bDates[i]);
+    }
+    if(aDates[2] !== bDates[2]){
+      return aDates[2] - bDates[2];
+    }
+    if(aDates[0] !== bDates[0]){
+      return aDates[0] - bDates[0];
+    }
+    if(aDates[1] !== bDates[1]){
+      return aDates[1] - bDates[1];
+    }
+    return Number(a.time) - Number(b.time);
    })
    
    return workouts;
 }
 
-var formatDate = function(date){
-  return date;
-  
+//Checks to see if given date is within range when provided start and end
+var dateInRange = function(date, startDate, endDate){
+  return (Date.parse(date) >= Date.parse(startDate)) && (Date.parse(date) <= Date.parse(endDate))
 }
 
-var drawWorkouts = function(){
+var drawWorkouts = function(startDate, endDate){
+  if(startDate === undefined){
+    startDate = "01/01/1970";
+  }
+  if(endDate === undefined){
+    endDate = "12/12/2100";
+  }
   var $plannedWorkouts = $(".planned-workouts");
   $plannedWorkouts.html("Planned Workouts")
   var $completedWorkouts = $(".completed-workouts");
@@ -142,11 +163,13 @@ var drawWorkouts = function(){
         modifyWorkout.close()
       });
     })
-    ///*****************
-    if(allWorkouts[i].completed === 'Y'){
-      $workout.appendTo(".completed-workouts");   
-    }else{
-      $workout.appendTo(".planned-workouts"); 
+    ///First checks to see if date of workout is within given range, then adds to appropriate column
+    if(dateInRange(allWorkouts[i].date, startDate, endDate)){
+      if(allWorkouts[i].completed === 'Y'){
+        $workout.appendTo(".completed-workouts");   
+      }else{
+        $workout.appendTo(".planned-workouts"); 
+      }
     }
   } //completes iteration through all workouts
   generateChart(allWorkouts);
@@ -183,7 +206,11 @@ var generateChart = function(allWorkouts){
                   return value + ' minutes';
               }
           }
-      }
+      },
+    size: {
+      width: 600,
+      height: 600
+    }
   });
 }
 
@@ -219,4 +246,12 @@ $(document).ready(function() {
     event.preventDefault();
     drawWorkouts();
   });
+
+  $("#date-btn").unbind("click").click(function(event){
+    event.preventDefault();
+    var startDate = $("#date-start").val();
+    var endDate = $("#date-end").val();
+    drawWorkouts(startDate,endDate);
+  });
+
 });
